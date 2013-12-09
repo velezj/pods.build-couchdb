@@ -62,6 +62,7 @@ pkgconfiged.touch: installed.touch
 fetch:
 	@echo "\n Fetching $(POD_NAME) from $(FETCH_URL) \n"
 	git clone $(FETCH_URL)
+	cd build-couchdb && git submodule init && git submodule update
 	@touch fetched.touch
 
 unarchive:
@@ -71,8 +72,8 @@ unarchive:
 build-source:
 	@echo "\n Building $(POD_NAME) \n"
 	@mkdir -p pod-build
-	pod-run gem install rake
-	cd build-couchdb && pod-run rake --install=$(BUILD_PREFIX)
+	#pod-run gem install rake
+	cd build-couchdb && pod-run rake install=$(BUILD_PREFIX)
 	@touch built.touch
 
 install-source:
