@@ -61,24 +61,22 @@ pkgconfiged.touch: installed.touch
 
 fetch:
 	@echo "\n Fetching $(POD_NAME) from $(FETCH_URL) \n"
-	wget -O $(POD_NAME).tar.gz $(FETCH_URL)
+	git clone $(FETCH_URL)
 	@touch fetched.touch
 
 unarchive:
 	@echo "\n UnArchiving $(POD_NAME) \n"
-	@tar xzf $(POD_NAME).tar.gz
 	@touch unarchived.touch
 
 build-source:
 	@echo "\n Building $(POD_NAME) \n"
 	@mkdir -p pod-build
-	cd pod-build && ../$(POD_NAME)/configure --prefix=$(BUILD_PREFIX)
-	cd pod-build && make
+	pod-run gem install rake
+	cd build-couchdb && pod-run rake --install=$(BUILD_PREFIX)
 	@touch built.touch
 
 install-source:
 	@echo "\n Installing $(POD_NAME) \n"
-	cd pod-build && make install
 	@touch installed.touch
 
 pkgconfig-source:
